@@ -1,0 +1,37 @@
+/* Green Color Palette Showcase */
+.color-showcase {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.color-sample {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: white;
+  font-weight: 600;
+}
+
+/* Nature-inspired color samples */
+.sample-dark-forest { background: #1e3a0a; }
+.sample-deep-green { background: #2d5016; }
+.sample-forest-green { background: #3d6b1a; }
+.sample-medium-green { background: #5a8a3a; }
+.sample-fresh-green { background: #8fbc5f; }
+.sample-light-green { background: #b8d8a0; }
+.sample-pale-green { background: #e8f4d6; color: #2d5016; }
+
+/* Green palette with whites */
+.green-white-combo {
+  background: linear-gradient(135deg, #2d5016 0%, #5a8a3a 50%, #ffffff 100%);
+}
+
+.sage-white-combo {
+  background: linear-gradient(135deg, #8fbc5f 0%, #b8d8a0 50%, #ffffff 100%);
+}
+
+.nature-white-combo {
+  background: linear-gradient(135deg, #1e3a0a 0%, #3d6b1a 25%, #5a8a3a 50%, #b8d8a0 75%, #ffffff 100%);
+}
