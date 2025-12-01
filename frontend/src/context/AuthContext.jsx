@@ -52,10 +52,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     dispatch({ type: 'AUTH_START' })
     try {
-      const { user, token } = await authService.login(email, password)
-      localStorage.setItem('token', token)
-      dispatch({ type: 'AUTH_SUCCESS', payload: user })
-      return { success: true }
+      const result = await authService.login(email, password)
+      dispatch({ type: 'AUTH_SUCCESS', payload: result.user })
+      return { success: true, user: result.user }
     } catch (error) {
       dispatch({ type: 'AUTH_FAILURE', payload: error.message })
       return { success: false, error: error.message }
@@ -65,10 +64,9 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     dispatch({ type: 'AUTH_START' })
     try {
-      const { user, token } = await authService.signup(userData)
-      localStorage.setItem('token', token)
-      dispatch({ type: 'AUTH_SUCCESS', payload: user })
-      return { success: true }
+      const result = await authService.signup(userData)
+      dispatch({ type: 'AUTH_SUCCESS', payload: result.user })
+      return { success: true, user: result.user }
     } catch (error) {
       dispatch({ type: 'AUTH_FAILURE', payload: error.message })
       return { success: false, error: error.message }
@@ -76,7 +74,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    localStorage.removeItem('token')
+    authService.logout()
     dispatch({ type: 'LOGOUT' })
   }
 

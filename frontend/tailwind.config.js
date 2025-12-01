@@ -24,8 +24,18 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#000000",
+          foreground: "#ffffff",
+          50: "#f8f9fa",
+          100: "#f1f3f4",
+          200: "#e8eaed",
+          300: "#dadce0",
+          400: "#bdc1c6",
+          500: "#9aa0a6",
+          600: "#80868b",
+          700: "#5f6368",
+          800: "#3c4043",
+          900: "#202124",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -56,6 +66,20 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        'smooth': '12px',
+        'smooth-lg': '16px',
+        'smooth-xl': '20px',
+        'smooth-2xl': '24px',
+        'smooth-3xl': '32px',
+      },
+      boxShadow: {
+        'smooth': '0 2px 8px rgba(0, 0, 0, 0.06)',
+        'smooth-lg': '0 4px 16px rgba(0, 0, 0, 0.1)',
+        'smooth-xl': '0 8px 24px rgba(0, 0, 0, 0.12)',
+        'smooth-2xl': '0 12px 32px rgba(0, 0, 0, 0.15)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         "accordion-down": {

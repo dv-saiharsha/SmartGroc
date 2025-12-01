@@ -1,197 +1,296 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent } from '../components/ui/card'
-import { Button } from '../components/ui/button'
-import { Badge } from '../components/ui/badge'
-import { useAuth } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
-import { 
-  ShoppingBag, 
-  Zap, 
-  Shield, 
-  Star,
-  ArrowRight,
-  Users,
-  Package,
-  Sparkles
-} from 'lucide-react'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { useAuth } from '../context/AuthContext'
 
 const Home = () => {
   const { isAuthenticated, user } = useAuth()
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
-
-  const stats = [
-    { label: "Happy Customers", value: "50K+", icon: <Users className="h-5 w-5" /> },
-    { label: "Products", value: "10K+", icon: <Package className="h-5 w-5" /> },
-    { label: "Trusted Sellers", value: "500+", icon: <Star className="h-5 w-5" /> },
-    { label: "Uptime", value: "99.9%", icon: <Shield className="h-5 w-5" /> }
-  ]
+  const [location, setLocation] = useState('Enter your location')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const features = [
     {
-      icon: <Zap className="h-6 w-6" />,
-      title: "AI-Powered Shopping",
-      description: "Smart recommendations tailored to your preferences"
+      icon: <i className="fas fa-truck-fast text-4xl text-gray-800"></i>,
+      title: "Fast Delivery",
+      description: "Get your groceries delivered in 30 minutes"
     },
     {
-      icon: <Shield className="h-6 w-6" />,
-      title: "Secure & Reliable",
-      description: "Bank-grade security with 99.9% uptime guarantee"  
+      icon: <i className="fas fa-shield-check text-4xl text-gray-800"></i>,
+      title: "Quality Guaranteed",
+      description: "Fresh products with 100% quality assurance"
     },
     {
-      icon: <ShoppingBag className="h-6 w-6" />,
-      title: "Fast Delivery", 
-      description: "Fresh groceries delivered in 30 minutes or less"
+      icon: <i className="fas fa-leaf text-4xl text-gray-800"></i>,
+      title: "Fresh & Organic",
+      description: "Sourced directly from local farms"
     }
   ]
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-green-50/30 to-green-100/50">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-16 lg:pt-24 lg:pb-20">
-        {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-600/5 via-green-400/5 to-green-200/10" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-r from-green-400/20 to-green-300/20 rounded-full blur-3xl animate-pulse-slow" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            {/* Badge */}
-            <div className={`inline-flex mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <Badge variant="secondary" className="glass px-4 py-2 text-sm font-medium">
-                <Sparkles className="h-4 w-4 mr-2" />
-                AI-Powered Platform
-              </Badge>
-            </div>
+  const categories = [
+    {
+      name: "Fresh Vegetables",
+      image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=400&fit=crop",
+      count: "200+ items",
+      link: "/products?category=vegetables",
+      color: "from-green-400 to-emerald-600"
+    },
+    {
+      name: "Fresh Fruits",
+      image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400&h=400&fit=crop",
+      count: "150+ items", 
+      link: "/products?category=fruits",
+      color: "from-red-400 to-rose-600"
+    },
+    {
+      name: "Dairy Products",
+      image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=400&fit=crop",
+      count: "80+ items",
+      link: "/products?category=dairy",
+      color: "from-blue-400 to-indigo-600"
+    },
+    {
+      name: "Bakery Items",
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=400&fit=crop",
+      count: "60+ items",
+      link: "/products?category=bakery",
+      color: "from-amber-400 to-orange-600"
+    },
+    {
+      name: "Meat & Seafood",
+      image: "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=400&h=400&fit=crop",
+      count: "90+ items",
+      link: "/products?category=meat",
+      color: "from-cyan-400 to-blue-600"
+    },
+    {
+      name: "Pantry Essentials",
+      image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop",
+      count: "300+ items",
+      link: "/products?category=pantry",
+      color: "from-purple-400 to-violet-600"
+    }
+  ]
 
-            {/* Main Heading */}
-            <div className={`mb-8 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6">
-                Smart Grocery Shopping
-                <br />
-                <span className="gradient-text-forest">Made Simple</span>
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      
+      {/* Hero Section */}
+      <section 
+        className="relative min-h-[85vh] flex items-center py-12 sm:py-16 lg:py-20"
+        style={{
+          backgroundImage: 'url(/images/veg-basket.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60" style={{borderBottomLeftRadius: '25px', borderBottomRightRadius: '25px'}}></div>
+        
+        <div className="w-full relative z-10">
+          <div className="max-w-[95%] mx-auto px-4">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Left Content */}
+            <div className="text-white max-w-2xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6 sm:mb-8 text-white drop-shadow-lg">
+                Fresh groceries delivered to your{' '}
+                <span className="text-white">doorstep</span>
               </h1>
               
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Experience the future of grocery shopping with intelligent recommendations and seamless ordering
+              <p className="text-lg sm:text-xl text-white mb-8 sm:mb-10 leading-relaxed drop-shadow-lg max-w-xl">
+                Shop from the best local stores and get everything delivered fresh, fast, and reliable.
               </p>
-            </div>
 
-            {/* CTA Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-12 transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-lg hover-lift">
-                <ShoppingBag className="h-5 w-5 mr-2" />
-                Start Shopping
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-              
-              <Button variant="outline" size="lg" className="glass px-8 py-3 rounded-lg border-white/20 hover:bg-white/10">
-                <Sparkles className="h-5 w-5 mr-2" />
-                Get Started Free
-              </Button>
-            </div>
+              {/* Location and Search */}
+              <div className="space-y-4 max-w-lg">
+                {/* Location Input */}
+                <div className="flex items-center bg-white p-4 shadow-lg transition-shadow hover:shadow-xl" style={{borderRadius: '25px'}}>
+                  <i className="fas fa-location-dot text-gray-800 text-lg mr-3 flex-shrink-0"></i>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="flex-1 text-gray-700 bg-transparent outline-none"
+                    placeholder="Enter your delivery location"
+                  />
+                </div>
 
-            {/* Status Badge */}
-            <div className={`inline-flex items-center transition-all duration-700 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-                ✅ NEW ENHANCED UI IS LOADING! ✅
+                {/* Search Form */}
+                <form onSubmit={handleSearch} className="flex items-center bg-white p-4 shadow-lg transition-shadow hover:shadow-xl" style={{borderRadius: '25px'}}>
+                  <i className="fas fa-magnifying-glass text-gray-400 text-lg mr-3"></i>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1 text-gray-700 bg-transparent outline-none"
+                    placeholder="Search for products..."
+                  />
+                  <Button type="submit" className="bg-black hover:bg-gray-800 text-white font-medium px-4 py-2 ml-3 transition-colors" style={{borderRadius: '25px'}}>
+                    <i className="fas fa-magnifying-glass mr-2"></i>
+                    Search
+                  </Button>
+                </form>
               </div>
+            </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 bg-white/60 backdrop-blur-sm border-y border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div 
-                key={stat.label}
-                className={`text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                style={{ transitionDelay: `${800 + index * 100}ms` }}
+      {/* Features Section */}
+      <section className="w-full bg-gray-50 py-16 sm:py-20 lg:py-24">
+        <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Why Choose SmartGrocer?
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              We're committed to providing the best grocery shopping experience with quality, convenience, and reliability.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 sm:p-8 shadow-lg text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                style={{borderRadius: '25px'}}
               >
-                <div className="flex items-center justify-center mb-3">
-                  <div className="p-3 rounded-full bg-primary/10 text-primary">
-                    {stat.icon}
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 bg-gray-100 flex items-center justify-center" style={{borderRadius: '50%'}}>
+                    {feature.icon}
                   </div>
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {stat.label}
-                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose SmartGrocer?
+      {/* Categories Section */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white">
+        <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Shop by Category
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Experience powerful features designed to revolutionize your grocery shopping and selling journey.
+            <p className="text-base sm:text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
+              Explore our wide range of fresh and quality products
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card 
-                key={feature.title}
-                className={`glass hover-lift border-white/20 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                style={{ transitionDelay: `${1200 + index * 200}ms` }}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+            {categories.map((category, index) => (
+              <Link
+                key={index}
+                to={category.link}
+                className="group relative bg-white overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                style={{borderRadius: '20px'}}
               >
-                <CardContent className="p-8 text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-6">
-                    {feature.icon}
+                {/* Image Container */}
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={category.image} 
+                    alt={category.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Gradient Overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
+                  
+                  {/* Item Count Badge */}
+                  <div className="absolute top-3 right-3 backdrop-blur-md bg-white/90 px-3 py-1.5 rounded-full shadow-lg">
+                    <span className="text-xs font-bold text-gray-800">{category.count}</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {feature.title}
+                </div>
+                
+                {/* Category Info */}
+                <div className="p-4 bg-gradient-to-br from-white to-gray-50">
+                  <h3 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-black transition-colors">
+                    {category.name}
                   </h3>
-                  <p className="text-gray-600">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+                  
+                  {/* Shop Now Button */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-600 font-medium">Shop Now</span>
+                    <i className="fas fa-arrow-right text-gray-600 group-hover:text-black group-hover:translate-x-1 transition-all"></i>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 to-green-600/10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-              Ready to Transform Your Shopping?
+      <section className="bg-gray-50 py-16 sm:py-20 lg:py-24">
+        <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Ready to start shopping?
             </h2>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Join thousands of satisfied customers and experience the future of grocery shopping today.
+            <p className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
+              Join thousands of happy customers who trust SmartGrocer for their daily grocery needs.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-lg hover-lift">
-                <Link to="/products">
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  Browse Products
-                </Link>
-              </Button>
-              
-              {!isAuthenticated && (
-                <Button variant="outline" size="lg" asChild className="px-8 py-3 rounded-lg">
-                  <Link to="/login">
-                    Get Started Free
-                  </Link>
+            {isAuthenticated ? (
+              <Link to="/products">
+                <Button className="btn-primary text-lg px-8 py-3">
+                  Start Shopping
+                  <i className="fas fa-arrow-right ml-2"></i>
                 </Button>
-              )}
+              </Link>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/signup">
+                  <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-3 transition-colors" style={{borderRadius: '25px'}}>
+                    Sign Up Now
+                  </Button>
+                </Link>
+                <Link to="/products">
+                  <Button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-black text-lg px-8 py-3 transition-colors" style={{borderRadius: '25px'}}>
+                    Browse Products
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 sm:py-20 lg:py-24 border-t border-gray-200 bg-white">
+        <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
+            <div className="text-center p-6 bg-white border border-gray-100 hover:shadow-lg transition-all duration-300" style={{borderRadius: '25px'}}>
+              <div className="text-4xl font-black gradient-text mb-3">10,000+</div>
+              <div className="text-gray-600 font-medium">Products Available</div>
+            </div>
+            <div className="text-center p-6 bg-white border border-gray-100 hover:shadow-lg transition-all duration-300" style={{borderRadius: '25px'}}>
+              <div className="text-4xl font-black gradient-text mb-3">50,000+</div>
+              <div className="text-gray-600 font-medium">Happy Customers</div>
+            </div>
+            <div className="text-center p-6 bg-white border border-gray-100 hover:shadow-lg transition-all duration-300" style={{borderRadius: '25px'}}>
+              <div className="text-4xl font-black gradient-text mb-3">100+</div>
+              <div className="text-gray-600 font-medium">Partner Stores</div>
+            </div>
+            <div className="text-center p-6 bg-white border border-gray-100 hover:shadow-lg transition-all duration-300" style={{borderRadius: '25px'}}>
+              <div className="text-4xl font-black gradient-text mb-3">30 min</div>
+              <div className="text-gray-600 font-medium">Average Delivery</div>
             </div>
           </div>
         </div>
